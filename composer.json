@@ -1,0 +1,27 @@
+{
+    "name": "selket/enhcontroller",
+    "license": "MIT",
+    "description": "Enhanced controller for Laravel 4",
+    "authors": [
+        {
+            "name": "Selket",
+            "email": "selketdev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Selket\\EnhController\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://selket@bitbucket.org/selket/cms.git"
+        }
+    ]
+}
