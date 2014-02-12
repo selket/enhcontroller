@@ -17,11 +17,5 @@
             "Selket\\EnhController\\": "src/"
         }
     },
-    "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://selket@bitbucket.org/selket/cms.git"
-        }
-    ]
+    "minimum-stability": "dev"
 }
