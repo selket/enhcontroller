@@ -46,12 +46,6 @@ abstract class Controller extends IlluminateRoutingController implements Control
      */
     public $map;
 
-    /**
-     * A response of the action execution
-     *
-     * @var \Symfony\Component\HttpFoundation\Response
-     */
-    public $response;
 
     /**
      * Constructor
@@ -63,11 +57,11 @@ abstract class Controller extends IlluminateRoutingController implements Control
 		$this->className = get_class($this);
 
 		if (is_null($this->name))
-            $this->name = str_replace('\\', '', snake_case($this->className));
+            		$this->name = str_replace('\\', '', snake_case($this->className));
 
-        $this->mapper = $mapper;
-        if (!is_null($this->map))
-            $this->mapper->set($this->map);
+        	$this->mapper = $mapper;
+        	if (!is_null($this->map))
+            		$this->mapper->set($this->map);
 	}
 
     /**
@@ -80,21 +74,21 @@ abstract class Controller extends IlluminateRoutingController implements Control
      */
     public function callAction($action, $parameters=array())
 	{
-        if (is_null($action))
-            throw new Exception('No actions in class '.$this->className);
+        	if (is_null($action))
+            		throw new Exception('No actions in class '.$this->className);
 
-        $this->action = $action;
+        	$this->action = $action;
 
-        $response = $this->beforeAction();
+        	$response = $this->beforeAction();
 
-        if (is_null($response))
-        {
-            $this->setupLayout();
+        	if (is_null($response))
+        	{
+            		$this->setupLayout();
 
-            $response = $this->afterAction($this->getAction($this->action, $parameters));
-        }
+            		$response = $this->afterAction($this->getAction($this->action, $parameters));
+        	}
 
-        return $response;
+        	return $response;
 	}
 
     /**
@@ -110,7 +104,7 @@ abstract class Controller extends IlluminateRoutingController implements Control
 	}
 
     /**
-     * Execute and response action
+     * Execute and return action response
      *
      * @param int $action
      * @param array $parameters
@@ -118,8 +112,8 @@ abstract class Controller extends IlluminateRoutingController implements Control
      */
     public function getAction($action, $parameters=array())
 	{
-        return $this->getActionResponse($this->getActionInstance($action,$parameters));
-    }
+        	return $this->getActionResponse($this->getActionInstance($action,$parameters));
+    	}
 
     /**
      * Get action instance
@@ -136,8 +130,8 @@ abstract class Controller extends IlluminateRoutingController implements Control
 		if (!$actionClassName)
 			throw new Exception('Action #'.$action.' not found in class '.$this->className);
 
-        if (empty($parameters))
-            $parameters = [$this];
+        	if (empty($parameters))
+            		$parameters = [$this];
 
 		return App::make($actionClassName,$parameters);
 	}
@@ -150,13 +144,13 @@ abstract class Controller extends IlluminateRoutingController implements Control
      */
     public function getActionResponse(Action $actionInstance)
 	{
-        $response = $actionInstance->call();
+        	$response = $actionInstance->call();
 
-        if (is_null($response) && !is_null($this->layout))
-            $response = $this->layout;
+        	if (is_null($response) && !is_null($this->layout))
+            		$response = $this->layout;
 
-        return ($response instanceof Response) ? $response : Response::create($response);
-    }
+        	return ($response instanceof Response) ? $response : Response::create($response);
+    	}
 
     /**
      * Before action event handler
@@ -164,9 +158,9 @@ abstract class Controller extends IlluminateRoutingController implements Control
      * @return null
      */
     protected function beforeAction()
-    {
-        return null;
-    }
+    	{
+        	return null;
+    	}
 
     /**
      * After action event handler
@@ -175,9 +169,9 @@ abstract class Controller extends IlluminateRoutingController implements Control
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function afterAction(Response $response)
-    {
-        return $response;
-    }
+    	{
+        	return $response;
+    	}
 
     /**
      * Find action class name in this class and parents through action ID
@@ -190,25 +184,25 @@ abstract class Controller extends IlluminateRoutingController implements Control
 		$actionClassName = $this->mapper->getClass($action);
 
 		if (class_exists($actionClassName))
-        {
-            return $actionClassName;
-        }
+        	{
+            		return $actionClassName;
+        	}
 		else
 		{
 			$parents = class_parents($this);
 
 			foreach ($parents as $class)
 			{
-                $reflector = new ReflectionClass($class);
+                		$reflector = new ReflectionClass($class);
 
-                if ($reflector->implementsInterface('Selket\EnhController\ControllerInterface') && !$reflector->isAbstract())
-                {
+                		if ($reflector->implementsInterface('Selket\EnhController\ControllerInterface') && !$reflector->isAbstract())
+                		{
 					$actionClassName = App::make($class)->mapper->getClass($action);
 
 					if (class_exists($actionClassName))
-                    {
-                        return $actionClassName;
-                    }
+                    			{
+                        			return $actionClassName;
+                    			}
 				}
 			}
 		}
@@ -225,19 +219,19 @@ abstract class Controller extends IlluminateRoutingController implements Control
      */
     public function __call($method, $args)
    	{
-        if (is_numeric($method))
-        {
-            $action = $method;
-        }
-        elseif(strpos($method,'\\') === false)
-        {
-            $actionClassName = substr($this->className,0,strrpos($this->className,'\\')+1).$method;
-            $action = $this->mapper->getAction($actionClassName);
-        }
-        else
-        {
-            $action = $this->mapper->getAction($method);
-        }
+        	if (is_numeric($method))
+        	{
+            		$action = $method;
+        	}
+        	elseif(strpos($method,'\\') === false)
+        	{
+            		$actionClassName = substr($this->className,0,strrpos($this->className,'\\')+1).$method;
+            		$action = $this->mapper->getAction($actionClassName);
+        	}
+        	else
+        	{
+            		$action = $this->mapper->getAction($method);
+        	}
 
    		return $this->callAction($action);
    	}
