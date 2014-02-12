@@ -12,7 +12,7 @@ Declare controller class
 ```
 namespace MyNamespace;
 
-use ITelkov\EnhController;
+use Selket\EnhController;
 
 Class MyController extends EnhController\Controller implements EnhController\ControllerInterface {
 
@@ -34,7 +34,7 @@ Declare accepted action classes
 ```
 namespace MyNamespace;
 
-use ITelkov\EnhController;
+use Selket\EnhController;
 
 Class MyAction1 extends EnhController\Action implements EnhController\ActionInterface {
 
