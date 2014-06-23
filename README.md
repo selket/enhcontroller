@@ -16,6 +16,8 @@ use Selket\EnhController;
 
 Class MyController extends EnhController\Controller implements EnhController\ControllerInterface {
 
+	public $hello = 'Hello';
+
 	public $map = [
 		1 => 'MyNamespace\MyAction1',
 		2 => 'MyNamespace\MyAction2',
@@ -25,11 +27,10 @@ Class MyController extends EnhController\Controller implements EnhController\Con
 	{
 		parent::__construct($mapper);
 	}
-
 }
 ```
 
-Declare accepted action classes
+Declare mapping action classes 
 
 ```
 namespace MyNamespace;
@@ -38,15 +39,17 @@ use Selket\EnhController;
 
 Class MyAction1 extends EnhController\Action implements EnhController\ActionInterface {
 
+	protected $world = 'World';
+
 	public function call() {
-		return 'Hellow world 1!';
+		return $this->controller->hello. ' ' . $this->world; // controller access usage
 	}
 }
 
 Class MyAction2 extends EnhController\Action implements EnhController\ActionInterface {
 
 	public function call() {
-		return 'Hellow world 2!';
+		return $this->controller->callAction(1) . '!'; // other action call
 	}
 }
 ```
