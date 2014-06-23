@@ -16,6 +16,8 @@ use Selket\EnhController;
 
 Class MyController extends EnhController\Controller implements EnhController\ControllerInterface {
 
+	public $some = "World";
+
 	public $map = [
 		1 => 'MyNamespace\MyAction1',
 		2 => 'MyNamespace\MyAction2',
@@ -25,7 +27,6 @@ Class MyController extends EnhController\Controller implements EnhController\Con
 	{
 		parent::__construct($mapper);
 	}
-
 }
 ```
 
@@ -38,15 +39,19 @@ use Selket\EnhController;
 
 Class MyAction1 extends EnhController\Action implements EnhController\ActionInterface {
 
+	public $my = 1;
+
 	public function call() {
-		return 'Hellow world 1!';
+		return 'Hello ' . $this->controller->some . ' ' .$my;
 	}
 }
 
 Class MyAction2 extends EnhController\Action implements EnhController\ActionInterface {
 
+	protected $my = 2;
+
 	public function call() {
-		return 'Hellow world 2!';
+		return 'Hello ' . $this->controller->some . ' ' .$my;
 	}
 }
 ```
@@ -54,9 +59,9 @@ Class MyAction2 extends EnhController\Action implements EnhController\ActionInte
 Define routing
 
 ```
-// by action class name
-Route::get('foo', 'MyNamespace\MyController@MyNamespace\MyAction1');
+// call action by class name
+Route::get('foo', 'MyNamespace\MyController@MyNamespace\MyAction2');
 
-// by action numeric key
+// call action by numeric key
 Route::get('foo', 'MyNamespace\MyController@2');
 ```
